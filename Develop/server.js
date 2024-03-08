@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { clog } = require('./middleware/clog');
 const api = require('./routes/index.js');
+// const fs = require('fs');
 
 const PORT = process.env.port || 3001;
 
@@ -22,10 +23,18 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
+
 // GET Route for feedback page
 app.get('/feedback', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/pages/feedback.html'))
 );
+
+//wildcard route that will send the users to a 404 page
+// This route is placed at the end because Express.js routes are evaluated in order
+// they are defined.
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/pages/404.html'))
+});
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)

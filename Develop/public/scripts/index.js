@@ -1,3 +1,5 @@
+const { response, json } = require("express");
+
 const tipForm = document.getElementById('tip-form');
 const tipsContainer = document.getElementById('tip-container');
 const fbBtn = document.getElementById('feedback-btn');
@@ -124,10 +126,16 @@ const showErrors = (errorObj) => {
 // Helper function to send a POST request to the diagnostics route (/api/diagnostics)
 const submitDiagnostics = (submissionObj) => {
   // TODO: your code here
-  console.info(
-    '⚠️ Create the logic for the fetch POST request in scripts/index.js'
-  );
-  alert('Add your logic to scripts/index.js');
+  fetch('/api/diagnostics', {
+    method : 'POST',
+    headers : { 'Content-Type' : 'application/json' },
+    body : JSON.stringify(submissionObj),
+  })
+  .then((response) => response,json())
+  .then(() => showErrors(submissionObj.errors))
+  .catch((error) => {
+    console.error('Error: ', error);
+  })
 };
 
 // Function to handle when a user submits the feedback form
